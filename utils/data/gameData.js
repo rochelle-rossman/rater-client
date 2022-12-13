@@ -18,7 +18,7 @@ const getSingleGame = (gameId) => new Promise((resolve, reject) => {
         numberOfPlayers: data.number_of_players,
         playTime: data.play_time,
         ageRec: data.age_rec,
-        categoryId: data.category_id,
+        avgRating: data.average_rating,
       });
     })
     .catch((error) => reject(error));
@@ -33,7 +33,6 @@ const createGame = (game) => new Promise((resolve, reject) => {
     number_of_players: Number(game.numberOfPlayers),
     play_time: game.playTime,
     age_rec: Number(game.ageRec),
-    category_id: game.categoryId,
   };
   fetch(`${dbUrl}/games`, {
     method: 'POST',
@@ -55,7 +54,6 @@ const updateGame = (game, id) => new Promise((resolve, reject) => {
     number_of_players: Number(game.numberOfPlayers),
     play_time: game.playTime,
     age_rec: Number(game.ageRec),
-    category_id: game.categoryId,
   };
   fetch(`${dbUrl}/games/${id}`, {
     method: 'PUT',

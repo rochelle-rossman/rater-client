@@ -26,7 +26,7 @@ export default function Home() {
       <hr />
       {games.map((game) => (
         <section key={`game--${game.id}`} className="game">
-          <GameCard title={game.title} designer={game.designer} releaseDate={game.year_released} playTime={game.play_time} ageRec={game.age_rec} numberOfPlayers={game.number_of_players} description={game.description} category={game.category_id.label} />
+          <GameCard title={game.title} designer={game.designer} releaseDate={game.year_released} playTime={game.play_time} ageRec={game.age_rec} numberOfPlayers={game.number_of_players} description={game.description} id={game.id} avgRating={game.average_rating} />
         </section>
       ))}
     </article>

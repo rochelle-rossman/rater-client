@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
 import { Form, Button } from 'react-bootstrap';
-import getCategories from '../../utils/data/categoryData';
-import { createGame, updateGame } from '../../utils/data/gameData';
+import { createGameCategory, getCategories, updateGameCategory } from '../../utils/data/categoryData';
+import { createGame, getSingleGame, updateGame } from '../../utils/data/gameData';
 
 const initialState = {
   description: '',
@@ -13,19 +13,20 @@ const initialState = {
   numberOfPlayers: 2,
   playTime: '',
   ageRec: 0,
-  categoryId: {},
 };
 
 function GameForm({ gameObj }) {
   const [categories, setCategories] = useState([]);
   const [currentGame, setCurrentGame] = useState(initialState);
+  const [currentCategory, setCurrentCategory] = useState({
+    category_id: 0,
+  });
+
   const router = useRouter();
 
   useEffect(() => {
     getCategories().then(setCategories);
-    if (gameObj.id) {
-      setCurrentGame(gameObj);
-    }
+    if (gameObj?.id) setCurrentGame(gameObj);
   }, [gameObj]);
 
   const handleChange = (e) => {
@@ -36,12 +37,29 @@ function GameForm({ gameObj }) {
     }));
   };
 
+  const categoryHandleChange = (e) => {
+    const { name, value } = e.target;
+    console.warn(currentCategory);
+    setCurrentCategory((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (gameObj.id) {
-      updateGame(currentGame, gameObj.id).then(() => router.push('/games'));
+      updateGame(currentGame, gameObj.id)
+        .then(updateGameCategory(currentCategory, currentCategory.id))
+        .then(() => router.push('/games'));
     } else {
-      createGame(currentGame).then(() => router.push('/games'));
+      createGame(currentGame).then((response) => getSingleGame(response.id)).then((response) => {
+        const gameCategory = {
+          game_id: response.id,
+          category_id: currentCategory.category_id,
+        };
+        createGameCategory(gameCategory).then(() => router.push('/games'));
+      });
     }
   };
 
@@ -78,10 +96,10 @@ function GameForm({ gameObj }) {
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Category</Form.Label>
-          <Form.Select onChange={handleChange} value={currentGame.categoryId} className="mb-3" name="categoryId" required>
+          <Form.Select onChange={categoryHandleChange} value={currentCategory.id} className="mb-3" name="category_id" required>
             <option value="">Select a Game Category</option>
             {categories.map((category) => (
-              <option defaultValue={category.id === currentGame.categoryId} key={category.id} value={category.id}>
+              <option defaultValue={category.id === currentCategory.id} key={category.id} value={category.id}>
                 {category.label}
               </option>
             ))}

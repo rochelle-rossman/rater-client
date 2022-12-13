@@ -1,15 +1,15 @@
 const dbUrl = 'http://localhost:8000';
 
-const getReviews = () => new Promise((resolve, reject) => {
-  fetch(`${dbUrl}/reviews`).then((response) => response.json())
-    .then(resolve)
+const getReviews = (gameId) => new Promise((resolve, reject) => {
+  fetch(`${dbUrl}/reviews?game=${gameId}`)
+    .then((response) => resolve(response.json()))
     .catch(reject);
 });
 
 const createReview = (review) => new Promise((resolve, reject) => {
   const reviewObj = {
     game_id: review.gameId,
-    player_id: review.playerId,
+    player_id: review.player,
     comment: review.comment,
   };
   fetch(`${dbUrl}/reviews`, {
