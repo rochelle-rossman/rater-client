@@ -10,16 +10,21 @@ function Game({ gameObj, categories }) {
           <Card.Header>
             <b>{gameObj.title}</b>
           </Card.Header>
-          {/* <div>Categories: {categories.map((category) => (
-            <Card.Text key={category.id}>{category.label} </Card.Text>
-          ))}
-          </div> */}
-          <Card.Text>Designer: {gameObj.designer}</Card.Text>
+          <div>
+            <b>Categories:</b>
+            {categories.map((category) => (
+              <Card.Text key={category.id}>{category.category_id.label} </Card.Text>
+            ))}
+          </div>
+          <Card.Text>
+            <b>Designer: </b>
+            {gameObj.designer}
+          </Card.Text>
           <Card.Text>Release Date: {gameObj.releaseDate}</Card.Text>
           <Card.Text>Description: {gameObj.description}</Card.Text>
           <Card.Text>{gameObj.numberOfPlayers} Players</Card.Text>
           <Card.Text>Approximate Game Duration: {gameObj.playTime}</Card.Text>
-          <Card.Text>Recommended for Ages {gameObj.ageRec} +</Card.Text>
+          <Card.Text>Recommended for Ages: {gameObj.ageRec} +</Card.Text>
         </Card.Body>
       </Card>
     </div>
@@ -38,10 +43,14 @@ Game.propTypes = {
     ageRec: PropTypes.number,
   }).isRequired,
   categories: PropTypes.arrayOf(PropTypes.shape({
-    category: PropTypes.shape({
+    category_id: PropTypes.shape({
       id: PropTypes.number,
       label: PropTypes.string,
-    }).isRequired,
+    }),
+    game_id: PropTypes.shape({
+      id: PropTypes.number,
+      title: PropTypes.string,
+    }),
   })).isRequired,
 };
 

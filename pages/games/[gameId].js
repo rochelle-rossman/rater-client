@@ -18,13 +18,14 @@ export default function GameDetails() {
     getSingleGame(gameId).then(setGame);
     getReviews(gameId).then(setReviews);
     getGameCategories().then(setGameCategories);
-    // thisGamesCategories();
   }, [gameId]);
+
+  const thisGameCategories = () => gameCategories.filter((category) => category.game_id.id === game.id);
 
   return (
     <div key={game.id}>
       <Button onClick={() => router.push(`/games/reviews/${game.id}`)}>Add Your Review</Button>
-      <Game gameObj={game} categories={gameCategories} />
+      <Game gameObj={game} categories={thisGameCategories()} />
       {reviews.map((review) => (
         <Review review={review} key={review.id} />
       ))}
