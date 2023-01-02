@@ -13,10 +13,12 @@ function GameCard({
           <Card.Header>
             <b>{title}</b>
           </Card.Header>
-          {/* <Card.Text>Categories: {categories.map((category) => (
-            <div>{category.label}</div>
-          ))}
-          </Card.Text> */}
+          <div>
+            <b>Categories:</b>
+            {categories.map((category) => (
+              <Card.Text key={category.id}>{category.category_id.label} </Card.Text>
+            ))}
+          </div>
           <Card.Text>Designer: {designer}</Card.Text>
           <Card.Text>Release Date: {releaseDate}</Card.Text>
           <Card.Text>Description: {description}</Card.Text>
@@ -43,12 +45,18 @@ GameCard.propTypes = {
   playTime: PropTypes.number,
   ageRec: PropTypes.number,
   avgRating: PropTypes.number,
-  categories: PropTypes.arrayOf(PropTypes.shape({
-    category: PropTypes.shape({
-      id: PropTypes.number,
-      label: PropTypes.string,
-    }).isRequired,
-  })).isRequired,
+  categories: PropTypes.arrayOf(
+    PropTypes.shape({
+      category_id: PropTypes.shape({
+        id: PropTypes.number,
+        label: PropTypes.string,
+      }),
+      game_id: PropTypes.shape({
+        id: PropTypes.number,
+        title: PropTypes.string,
+      }),
+    }),
+  ).isRequired,
 }.isRequired;
 
 export default GameCard;
